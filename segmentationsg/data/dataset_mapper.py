@@ -26,12 +26,15 @@ class SceneGraphDatasetMapper(DatasetMapper):
             dict: a format that builtin models in detectron2 accept
         """
         dataset_dict = copy.deepcopy(dataset_dict)
-        image = utils.read_image(dataset_dict["file_name"], format=self.image_format)
-        h, w, _ = image.shape
-        if w != dataset_dict['width'] or h != dataset_dict['height']:
-            dataset_dict['width'] = w
-            dataset_dict['height'] = h
-        utils.check_image_size(dataset_dict, image)
+               if "scene_dataset" in dataset_dict["file_name"]:
+            path = f'{dataset_dict["file_name"].split("/")[0]}/VG_100K/{dataset_dict["file_name"].split("/")[1]}'
+        else:
+            path = dataset_dict["file_name"]
+        try:
+            image = utils.read_image(path, format=self.image_format)
+        except FileNotFoundError:
+            print(f'File not found: {path}')
+            return None
         
         if "sem_seg_file_name" in dataset_dict:
             sem_seg_gt = utils.read_image(dataset_dict.pop("sem_seg_file_name"), "L").squeeze(2)

@@ -35,10 +35,7 @@ class VisualGenomeTrainData:
         # self._process_data()
         self.dataset_dicts = self._fetch_data_dict()
         self.register_dataset()
-        try:
-            self.get_statistics()
-        except:
-            pass
+        self.get_statistics()
         
     def register_dataset(self):
         """
