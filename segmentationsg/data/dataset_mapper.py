@@ -26,7 +26,7 @@ class SceneGraphDatasetMapper(DatasetMapper):
             dict: a format that builtin models in detectron2 accept
         """
         dataset_dict = copy.deepcopy(dataset_dict)
-               if "scene_dataset" in dataset_dict["file_name"]:
+        if "scene_dataset" in dataset_dict["file_name"]:
             path = f'{dataset_dict["file_name"].split("/")[0]}/VG_100K/{dataset_dict["file_name"].split("/")[1]}'
         else:
             path = dataset_dict["file_name"]
