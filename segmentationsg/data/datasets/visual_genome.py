@@ -124,7 +124,7 @@ class VisualGenomeTrainData:
         """
         Parse examples and create dictionaries
         """
-        data_split = self.VG_attribute_h5['split'][:]
+        data_split = 2 if self.split == 'test' else 0
         split_flag = 2 if self.split == 'test' else 0
         split_mask = data_split == split_flag
         
