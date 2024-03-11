@@ -26,6 +26,7 @@ class SceneGraphDatasetMapper(DatasetMapper):
             dict: a format that builtin models in detectron2 accept
         """
         dataset_dict = copy.deepcopy(dataset_dict)        
+        path = dataset_dict["file_name"]
         try:
             image = utils.read_image(path, format=self.image_format)
         except FileNotFoundError:
