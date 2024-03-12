@@ -42,7 +42,7 @@ def setup():
         cfg.MODEL.ROI_SCENEGRaGraph.MODE)
     cfg.merge_from_file('configs/predictor_sg_dev_masktransfer.yaml', )
     # cfg.merge_from_list(args.opts)
-    cfg.MODEL.WEIGHTS = 'weights/model_0014999.pth'
+    cfg.MODEL.WEIGHTS = 'weights/model_0002999.pth'
     cfg.freeze()
     register_coco_data(cfg)
     register_datasets(cfg)
