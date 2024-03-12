@@ -1,7 +1,9 @@
 import logging
 import time
 
+import numpy as np
 import torch
+from detectron2 import utils
 from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog
 from detectron2.engine import DefaultPredictor, DefaultTrainer
@@ -13,6 +15,8 @@ import cv2
 from detectron2.data.datasets import register_coco_instances
 import os
 from detectron2.config import CfgNode as CN
+from detectron2.data import detection_utils as utils
+from detectron2.data import transforms as T
 
 
 def register_coco_data(args):
@@ -53,29 +57,25 @@ def setup():
 predictor = DefaultPredictor(setup())
 
 
-def prepare_image(image_path, target_height, target_width):
-    # Load the image
-    image = cv2.imread(image_path)
+def prepare_image(image_path):
+    try:
+        image = utils.read_image(image_path, format="BGR")
+    except FileNotFoundError:
+        print(f'File not found: {image_path}')
+        return None
 
-    # Resize the image
-    image = cv2.resize(image, (target_width, target_height))
+    sem_seg_gt = None
 
-    # Convert the image to RGB (Detectron2 requires RGB format)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-    # Normalize the image to [0, 1]
-    image = image / 255.0
-
-    return image
+    aug_input = T.AugInput(image, sem_seg=sem_seg_gt)
+    image, sem_seg_gt = aug_input.image, aug_input.sem_seg
+    return torch.as_tensor(np.ascontiguousarray(image.transpose(2, 0, 1)))
 
 
 # Example usage:
 image_path = 'test_dataset/1.jpg'
-target_height = 800  # Adjust to your model's input size
-target_width = 1200  # Adjust to your model's input size
 
 # Prepare the image
-prepared_image = prepare_image(image_path, target_height, target_width)
+prepared_image = prepare_image(image_path)
 start_time = time.time()
 with torch.no_grad():
     result = predictor(prepared_image)
