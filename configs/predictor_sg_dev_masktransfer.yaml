@@ -1,0 +1,37 @@
+_BASE_: "sg_dev_masktransfer.yaml"
+DATALOADER:
+  NUM_WORKERS: 1
+MODEL:
+  WEIGHTS: "weights/resnet_pretrained_weights.pth"
+  MASK_ON: True
+  ROI_SCENEGRAPH_HEAD:
+    USE_GT_BOX: False
+    USE_GT_OBJECT_LABEL: False
+    USE_MASK_ATTENTION: True
+    MASK_ATTENTION_TYPE: 'Weighted'
+    SIGMOID_ATTENTION: True
+    PREDICTOR: 'MotifSegmentationPredictorC'
+  ROI_BOX_FEATURE_EXTRACTORS:
+    CLASS_LOGITS_WITH_MASK: False
+    BOX_FEATURE_MASK: True
+  ROI_RELATION_FEATURE_EXTRACTORS:
+    MULTIPLY_LOGITS_WITH_MASKS: False
+  ROI_HEADS:
+    REFINE_SEG_MASKS: False
+OUTPUT_DIR: "weights"
+DATASETS:
+  SEG_DATA_DIVISOR: 2
+  VISUAL_GENOME:
+    IMAGES: "segmentationsg/scene_dataset/VG_100K/"
+    MAPPING_DICTIONARY: "segmentationsg/scene_dataset/VG-SGG-dicts-with-attri.json"
+    IMAGE_DATA: "segmentationsg/scene_dataset/image_data.json"
+    VG_ATTRIBUTE_H5: "segmentationsg/scene_dataset/VG-SGG-with-attri.h5"
+  MSCOCO:
+    ANNOTATIONS: "segmentationsg/coco_dataset/annotations"
+    DATAROOT: "segmentationsg/coco_dataset"
+TEST:
+  EVAL_PERIOD: 100000
+  RELATION:
+    REQUIRE_OVERLAP: False
+SOLVER:
+  IMS_PER_BATCH: 8
