@@ -88,7 +88,7 @@ image_path = 'test_dataset/1.jpg'
 
 start_time = time.time()
 with torch.no_grad():
-    result = predictor(build_input(image_path))
+    result = predictor(utils.read_image(image_path, format="BGR"))
 end_time = time.time()
 print(f"Time taken: {end_time - start_time} seconds")
 print(result)
