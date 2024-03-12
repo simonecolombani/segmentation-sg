@@ -1,6 +1,5 @@
 .weights
 .scene_dataset
-.test_dataset
 .coco_dataset
 # Byte-compiled / optimized / DLL files
 __pycache__/
