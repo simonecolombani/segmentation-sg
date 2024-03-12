@@ -22,13 +22,13 @@ OUTPUT_DIR: "weights"
 DATASETS:
   SEG_DATA_DIVISOR: 2
   VISUAL_GENOME:
-    IMAGES: "segmentationsg/scene_dataset/VG_100K/"
-    MAPPING_DICTIONARY: "segmentationsg/scene_dataset/VG-SGG-dicts-with-attri.json"
-    IMAGE_DATA: "segmentationsg/scene_dataset/image_data.json"
-    VG_ATTRIBUTE_H5: "segmentationsg/scene_dataset/VG-SGG-with-attri.h5"
+    IMAGES: "scene_dataset/VG_100K/"
+    MAPPING_DICTIONARY: "scene_dataset/VG-SGG-dicts-with-attri.json"
+    IMAGE_DATA: "scene_dataset/image_data.json"
+    VG_ATTRIBUTE_H5: "scene_dataset/VG-SGG-with-attri.h5"
   MSCOCO:
-    ANNOTATIONS: "segmentationsg/coco_dataset/annotations"
-    DATAROOT: "segmentationsg/coco_dataset"
+    ANNOTATIONS: "coco_dataset/annotations"
+    DATAROOT: "coco_dataset"
 TEST:
   EVAL_PERIOD: 100000
   RELATION:
