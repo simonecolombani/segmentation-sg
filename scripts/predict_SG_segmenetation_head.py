@@ -77,7 +77,7 @@ def build_input(image_path):
     if sem_seg_gt is not None:
         dataset_dict["sem_seg"] = torch.as_tensor(sem_seg_gt.astype("long"))
 
-    dataset_dict["relations"] = torch.as_tensor(np.ascontiguousarray(dataset_dict["relations"]))
+    dataset_dict["relations"] = []
     dataset_dict["annotations"] = []
     return dataset_dict
 
