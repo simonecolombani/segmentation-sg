@@ -57,28 +57,38 @@ def setup():
 predictor = DefaultPredictor(setup())
 
 
-def prepare_image(image_path):
-    try:
-        image = utils.read_image(image_path, format="BGR")
-    except FileNotFoundError:
-        print(f'File not found: {image_path}')
-        return None
+def build_input(image_path):
+    dataset_dict = dict()
+    dataset_dict["file_name"] = image_path
+    image = utils.read_image(dataset_dict["file_name"], format="BGR")
+    h, w, _ = image.shape
+    dataset_dict['width'] = w
+    dataset_dict['height'] = h
+    utils.check_image_size(dataset_dict, image)
 
+    # if "sem_seg_file_name" in dataset_dict:
+    #     sem_seg_gt = utils.read_image(dataset_dict.pop("sem_seg_file_name"), "L").squeeze(2)
+    # else:
     sem_seg_gt = None
 
     aug_input = T.AugInput(image, sem_seg=sem_seg_gt)
     image, sem_seg_gt = aug_input.image, aug_input.sem_seg
-    return torch.as_tensor(np.ascontiguousarray(image.transpose(2, 0, 1)))
+    dataset_dict["image"] = torch.as_tensor(np.ascontiguousarray(image.transpose(2, 0, 1)))
+    if sem_seg_gt is not None:
+        dataset_dict["sem_seg"] = torch.as_tensor(sem_seg_gt.astype("long"))
+
+    dataset_dict["relations"] = torch.as_tensor(np.ascontiguousarray(dataset_dict["relations"]))
+    dataset_dict["annotations"] = []
+    return dataset_dict
 
 
 # Example usage:
 image_path = 'test_dataset/1.jpg'
 
-# Prepare the image
-prepared_image = prepare_image(image_path)
+
 start_time = time.time()
 with torch.no_grad():
-    result = predictor(prepared_image)
+    result = predictor(build_input(image_path))
 end_time = time.time()
 print(f"Time taken: {end_time - start_time} seconds")
 print(result)
