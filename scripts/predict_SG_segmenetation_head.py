@@ -28,10 +28,6 @@ def register_coco_data(args):
                'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase',
                'scissors', 'teddy bear', 'hair drier', 'toothbrush']
     MetadataCatalog.get('coco_train_2014').set(thing_classes=classes, evaluator_type='coco')
-    annotations = args.DATASETS.MSCOCO.ANNOTATIONS
-    dataroot = args.DATASETS.MSCOCO.DATAROOT
-    register_coco_instances("coco_train_2017", {}, annotations + 'instances_train2017.json', dataroot + '/train2017/')
-    register_coco_instances("coco_val_2017", {}, annotations + 'instances_val2017.json', dataroot + '/val2017/')
 
 
 def setup():
@@ -74,7 +70,7 @@ def prepare_image(image_path, target_height, target_width):
 
 
 # Example usage:
-image_path = 'test_dataset/3.png'
+image_path = 'test_dataset/1.jpg'
 target_height = 800  # Adjust to your model's input size
 target_width = 1200  # Adjust to your model's input size
 
